@@ -1,4 +1,4 @@
-import { DownloadIcon, TrashIcon, PencilIcon } from "@heroicons/react/outline";
+import { DownloadIcon, TrashIcon, PencilIcon, UserIcon } from "@heroicons/react/outline";
 import word from "../Assets/word.png";
 import excel from "../Assets/excel.png";
 import powerpoint from "../Assets/powerpoint.png";
