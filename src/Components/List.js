@@ -1,38 +1,22 @@
-import { DownloadIcon, TrashIcon, PencilIcon, UserIcon } from "@heroicons/react/outline";
+import { DownloadIcon, TrashIcon, PencilIcon } from "@heroicons/react/outline";
 import word from "../Assets/word.png";
 import excel from "../Assets/excel.png";
 import powerpoint from "../Assets/powerpoint.png";
-
-const people = [
-  {
-    id: "",
-    name: "Indkaldelse.docx",
-    status: "Checked-Out",
-    role: "Member",
-    image: word,
-  },
-  {
-    id: "",
-    name: "Budget.xlsx",
-    status: "Checked-Out",
-    role: "Member",
-    image: excel,
-  },
-  {
-    id: "",
-    name: "Kick off 2022.pptx",
-    status: "Checked-Out",
-    role: "Member",
-    image: powerpoint,
-  },
-];
-
-function GetIcon(filename) {
-  if (filename.indexOf(".docx") > 0) return word;
-  if (filename.indexOf(".xlsx") > 0) return excel;
-  if (filename.indexOf(".pptx") > 0) return powerpoint;
-}
+import { GetFiles } from "../ApiClients/Files";
+import { useState, useEffect } from "react";
 export default function ListView() {
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    GetFiles().then((x) => setFiles(x));
+  }, []);
+
+  function GetIcon(filename) {
+    if (filename.indexOf(".docx") > 0) return word;
+    if (filename.indexOf(".xlsx") > 0) return excel;
+    if (filename.indexOf(".pptx") > 0) return powerpoint;
+  }
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -68,8 +52,8 @@ export default function ListView() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person) => (
-                    <tr key={person.email}>
+                  {files.map((person, key) => (
+                    <tr key={key}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                         <div className="flex items-center">
                           <div className="h-10 w-10 flex-shrink-0">
