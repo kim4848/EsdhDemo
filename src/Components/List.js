@@ -1,4 +1,4 @@
-import { DownloadIcon, TrashIcon, PencilIcon, StopIcon, UsersIcon } from "@heroicons/react/outline";
+import { DownloadIcon, TrashIcon, PencilIcon, StopIcon, UsersIcon, DocumentIcon } from "@heroicons/react/outline";
 import word from "../Assets/word.png";
 import excel from "../Assets/excel.png";
 import powerpoint from "../Assets/powerpoint.png";
@@ -6,10 +6,10 @@ import { GetFiles, GetLink, Cancel } from "../ApiClients/Files";
 import { useState, useEffect } from "react";
 export default function ListView() {
 	const [files, setFiles] = useState([]);
-	const [session, setSession] = useState(null);
 
 	useEffect(() => {
 		GetFiles().then((x) => setFiles(x));
+		setInterval(() => GetFiles().then((x) => setFiles(x)), 10000);
 	}, []);
 
 	function GetIcon(filename) {
@@ -20,7 +20,6 @@ export default function ListView() {
 
 	const edit = (filename) => {
 		GetLink(filename).then((x) => {
-			setSession(x.id);
 			window.open(x.url);
 			GetFiles().then((x) => setFiles(x));
 		});
@@ -30,7 +29,12 @@ export default function ListView() {
 		<div className="px-4 sm:px-6 lg:px-8">
 			<div className="sm:flex sm:items-center">
 				<div className="sm:flex-auto">
-					<h1 className="text-xl font-semibold text-gray-900">Documents</h1>
+					<h1 className="text-xl font-semibold text-gray-900">
+						<div className="flex flex-row">
+							<DocumentIcon className="h-5 w-5 mt-1"></DocumentIcon>
+							<div className="-pt-2">User information</div>
+						</div>
+					</h1>
 					<p className="mt-2 text-sm text-gray-700">A list of all the documents.</p>
 				</div>
 				<div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
@@ -58,6 +62,9 @@ export default function ListView() {
 										<th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
 											Size
 										</th>
+										<th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 justify-center">
+											Edit
+										</th>
 										<th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
 											<span className="sr-only">Edit</span>
 										</th>
@@ -81,23 +88,27 @@ export default function ListView() {
 												<span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{item.status}</span>
 											</td>
 											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.size}</td>
-											<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-												<div className="flex flex-row mt-5 gap-x-5">
-													<div>
-														<button href="#" className="text-indigo-600 hover:text-indigo-900 ">
-															<DownloadIcon className="h-5 w-5" />
-														</button>
-													</div>
+											<td>
+												<div className="flex flex-row mt-5 gap-x-5 justify-center">
 													{item.chedkedOut ? (
 														<div>
-															<button alt="Undo checkout" className="text-indigo-600 hover:text-indigo-900 " onClick={() => Cancel(item.baseFileName).then(GetFiles().then((x) => setFiles(x)))}>
+															<button alt="Undo checkout" title="Undo checkout" className="text-indigo-600 hover:text-indigo-900 " onClick={() => Cancel(item.baseFileName).then(GetFiles().then((x) => setFiles(x)))}>
 																<StopIcon className="h-5 w-5" />
 															</button>
 														</div>
 													) : null}
 													<div>
-														<button className="text-indigo-600 hover:text-indigo-900" onClick={() => edit(item.baseFileName)}>
+														<button title={item.chedkedOut ? "Co-edit" : "edit"} className="text-indigo-600  hover:text-indigo-900" onClick={() => edit(item.baseFileName)}>
 															{item.chedkedOut ? <UsersIcon className="h-5 w-5" /> : <PencilIcon className="h-5 w-5" />}
+														</button>
+													</div>
+												</div>
+											</td>
+											<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+												<div className="flex flex-row mt-5 gap-x-5">
+													<div>
+														<button href="#" className="text-indigo-600 hover:text-indigo-900 ">
+															<DownloadIcon className="h-5 w-5" />
 														</button>
 													</div>
 													<div>
