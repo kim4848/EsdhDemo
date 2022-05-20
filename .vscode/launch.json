@@ -5,11 +5,7 @@
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
-            "platform": "node",
-            "node": {
-                "package": "${workspaceFolder}/node_modules/@nodelib/fs.stat/package.json",
-                "localRoot": "${workspaceFolder}/node_modules/@nodelib/fs.stat"
-            }
+            "platform": "node"
         }
     ]
 }
