@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: esdhbackend
+  labels:
+    app: esdhbackend
+spec:
+  containers:
+    - name: esdhbackend
+      image: kjcontaineres.azurecr.io/esdhdemo_backend:latest
+      ports:
+        - containerPort: 5047
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: esdhfrontend
+  labels:
+    app: esdhfrontend
+spec:
+  containers:
+    - name: esdhfrontend
+      image: kjcontaineres.azurecr.io/esdhdemo_frontend:latest
+      env:
+        - name: REACT_APP_ENDPOINT
+          value: ""
+      ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: esdhfrontend
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: esdhbackend
+  ports:
+    - port: 5047
+      targetPort: 5047
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-myservicea
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /Files
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 5047
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 3000
+
+  ingressClassName: nginx
