@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esdhdemofrontend-deployment
+  labels:
+    app: esdhdemofrontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esdhdemofrontend
+  template:
+    metadata:
+      labels:
+        app: esdhdemofrontend
+    spec:
+      containers:
+      - name: esdhdemofrontend
+        image: kjcontaineres.azurecr.io/esdhdemo_frontend:latest
+        env:
+        - name: REACT_APP_ENDPOINT
+          valueFrom:
+            fieldRef:
+              fieldPath: esdhdemobackend-service
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: esdhdemofrontend-service
+spec:
+  selector:
+    app: esdhdemofrontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
