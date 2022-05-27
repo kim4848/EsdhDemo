@@ -19,7 +19,9 @@ export default function ListView() {
 	}
 
 	const edit = (filename) => {
-		GetLink(filename).then((x) => {
+		var baseUri = window.location.origin;
+
+		GetLink(filename, baseUri, "da-DK", baseUri).then((x) => {
 			window.open(x.url);
 			GetFiles().then((x) => setFiles(x));
 		});
