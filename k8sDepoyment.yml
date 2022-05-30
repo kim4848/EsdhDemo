@@ -8,6 +8,7 @@ spec:
   containers:
     - name: esdhbackend
       image: kjcontaineres.azurecr.io/esdhdemo_backend:latest
+      imagePullPolicy: Always
       ports:
         - containerPort: 5047
 ---
@@ -21,6 +22,7 @@ spec:
   containers:
     - name: esdhfrontend
       image: kjcontaineres.azurecr.io/esdhdemo_frontend:latest
+      imagePullPolicy: Always
       env:
         - name: REACT_APP_ENDPOINT
           value: ""
@@ -59,7 +61,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /Files
+          - path: /Api
             pathType: Prefix
             backend:
               service:
