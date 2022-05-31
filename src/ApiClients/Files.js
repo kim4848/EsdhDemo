@@ -15,3 +15,14 @@ export function GetLink(fileName, baseUri, ui, landingPage) {
 export function Cancel(id) {
 	return fetch(`${process.env.REACT_APP_ENDPOINT}/Api/Files/Cancel/` + id);
 }
+
+export function Create(baseUri) {
+	var request = { BaseUri: `${baseUri}/Api/` };
+	return fetch(`${process.env.REACT_APP_ENDPOINT}/Api/DynamicTemplate/Create/`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(request),
+	}).then((x) => x.json());
+}
