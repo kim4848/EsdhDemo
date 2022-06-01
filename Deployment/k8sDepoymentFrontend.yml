@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esdhfrontend-deployment
+  labels:
+    app: esdhfrontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: esdhfrontend
+  template:
+    metadata:
+      labels:
+        app: esdhfrontend
+    spec:
+      containers:
+        - name: esdhfrontend
+          image: kjcontaineres.azurecr.io/esdhdemo_frontend:latest
+          imagePullPolicy: Always
+          env:
+            - name: REACT_APP_ENDPOINT
+              value: ""
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: esdhfrontend
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000

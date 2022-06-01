@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esdhbackend-deployment
+  labels:
+    app: esdhbackend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esdhbackend
+  template:
+    metadata:
+      labels:
+        app: esdhbackend
+    spec:
+      containers:
+        - name: esdhbackend
+          image: kjcontaineres.azurecr.io/esdhdemo_backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5047
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: esdhbackend
+  ports:
+    - port: 5047
+      targetPort: 5047
