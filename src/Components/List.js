@@ -90,7 +90,7 @@ export default function ListView() {
 												Name
 											</th>
 											<th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-												Status
+												Created
 											</th>
 											<th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
 												Size
@@ -118,7 +118,10 @@ export default function ListView() {
 													</div>
 												</td>
 												<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-													<span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{item.status}</span>
+													<span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+														<span>{new Date(item.createdOn).toDateString()}</span>
+														<span className="ml-2">{new Date(item.createdOn).toLocaleTimeString()}</span>
+													</span>
 												</td>
 												<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.size}</td>
 												<td>
