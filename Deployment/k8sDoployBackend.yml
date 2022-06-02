@@ -5,7 +5,7 @@ metadata:
   labels:
     app: esdhbackend
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: esdhbackend
@@ -20,6 +20,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 5047
+          env:                     # Environment variables passed to the container
+            - name: Dania__RedisServer
+              value: redis-master
 ---
 apiVersion: v1
 kind: Service
