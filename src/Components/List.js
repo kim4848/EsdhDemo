@@ -19,7 +19,7 @@ export default function ListView() {
 
 			var urlParams = new URLSearchParams(window.location.search);
 
-			var filename = urlParams.get("fileName");
+			var filename = urlParams.get("file");
 			setNewFile(filename);
 			console.log(filename);
 		});
