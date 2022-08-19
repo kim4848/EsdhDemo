@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-deployment
+  labels:
+    app: dashboard2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard2
+  template:
+    metadata:
+      labels:
+        app: dashboard2
+    spec:
+      containers:
+        - name: dashboard2
+          image: kjcontaineres.azurecr.io/dashboard:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env: # Environment variables passed to the container
+            - name: PUBLIC_URL
+              value: https://k8s.kjsoft.dk/dashboard/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-service
+spec:
+  selector:
+    app: dashboard2
+  ports:
+    - name: http
+      port: 4000
+      targetPort: 3000

@@ -17,6 +17,13 @@ spec:
                 name: backend-service
                 port:
                   number: 5047
+          - path: /dashboard
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard-service
+                port:
+                  number: 4000
           - path: /
             pathType: Prefix
             backend:
@@ -26,6 +33,6 @@ spec:
                   number: 3000
   tls:
     - hosts:
-      - k8s.kjsoft.dk
+        - k8s.kjsoft.dk
       secretName: letsencrypt-production
   ingressClassName: nginx
